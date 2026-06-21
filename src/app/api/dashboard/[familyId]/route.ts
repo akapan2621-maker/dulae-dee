@@ -38,7 +38,7 @@ export async function GET(
       return NextResponse.json({ error: membersError.message }, { status: 500 })
     }
 
-    const memberIds = members?.map(m => m.id) || []
+    const memberIds = (members as Array<{id: string}>)?.map(m => m.id) || []
 
     // Get today's date
     const today = new Date().toISOString().split('T')[0]

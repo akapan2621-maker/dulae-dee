@@ -34,7 +34,7 @@ export async function GET(
       return NextResponse.json({ error: membersError.message }, { status: 500 })
     }
 
-    const memberIds = members?.map(m => m.id) || []
+    const memberIds = (members as Array<{id: string}>)?.map(m => m.id) || []
     if (memberIds.length === 0) {
       return NextResponse.json({ data: { members: [], report: { checkins: [], medicationAdherence: [], emergencies: [] } } }, { status: 200 })
     }
