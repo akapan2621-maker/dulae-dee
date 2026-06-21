@@ -18,7 +18,7 @@ export async function GET(
     }
 
     // Get family info
-    const { data: family, error: familyError } = await supabase
+    const { data: family, error: familyError } = await supabase.schema('dulae_dee')
       .from('families')
       .select('*')
       .eq('id', familyId)
@@ -29,7 +29,7 @@ export async function GET(
     }
 
     // Get all members with their role
-    const { data: members, error: membersError } = await supabase
+    const { data: members, error: membersError } = await supabase.schema('dulae_dee')
       .from('family_members')
       .select('*')
       .eq('family_id', familyId)
@@ -44,28 +44,28 @@ export async function GET(
     const today = new Date().toISOString().split('T')[0]
 
     // Get today's check-ins
-    const { data: todayCheckins } = await supabase
+    const { data: todayCheckins } = await supabase.schema('dulae_dee')
       .from('checkins')
       .select('*')
       .in('family_member_id', memberIds)
       .eq('date', today)
 
     // Get active medications count
-    const { data: activeMedications } = await supabase
+    const { data: activeMedications } = await supabase.schema('dulae_dee')
       .from('medications')
       .select('id, family_member_id, name, times')
       .in('family_member_id', memberIds)
       .eq('is_active', true)
 
     // Get pending medication logs for today
-    const { data: pendingMedLogs } = await supabase
+    const { data: pendingMedLogs } = await supabase.schema('dulae_dee')
       .from('medication_logs')
       .select('*')
       .in('family_member_id', memberIds)
       .eq('status', 'pending')
 
     // Get active emergencies
-    const { data: activeEmergencies } = await supabase
+    const { data: activeEmergencies } = await supabase.schema('dulae_dee')
       .from('emergencies')
       .select('*')
       .in('family_member_id', memberIds)
@@ -74,7 +74,7 @@ export async function GET(
     // Get upcoming appointments (within next 7 days)
     const nextWeek = new Date()
     nextWeek.setDate(nextWeek.getDate() + 7)
-    const { data: upcomingAppointments } = await supabase
+    const { data: upcomingAppointments } = await supabase.schema('dulae_dee')
       .from('appointments')
       .select('*')
       .in('family_member_id', memberIds)

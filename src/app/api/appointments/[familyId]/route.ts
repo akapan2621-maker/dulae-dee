@@ -18,7 +18,7 @@ export async function GET(
     }
 
     // Get family members first
-    const { data: members, error: membersError } = await supabase
+    const { data: members, error: membersError } = await supabase.schema('dulae_dee')
       .from('family_members')
       .select('id')
       .eq('family_id', familyId)
@@ -34,7 +34,7 @@ export async function GET(
     }
 
     // Get all appointments for family members
-    const { data: appointments, error } = await supabase
+    const { data: appointments, error } = await supabase.schema('dulae_dee')
       .from('appointments')
       .select('*, family_members!inner(name, role)')
       .in('family_member_id', memberIds)

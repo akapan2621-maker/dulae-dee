@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for any existing active emergencies for this member
-    const { data: existingEmergency } = await supabase
+    const { data: existingEmergency } = await supabase.schema('dulae_dee')
       .from('emergencies')
       .select('id')
       .eq('family_member_id', family_member_id)
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: emergency, error } = await supabase
+    const { data: emergency, error } = await supabase.schema('dulae_dee')
       .from('emergencies')
       .insert({
         family_member_id,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     // Also create a check-in with emergency status
     const today = new Date().toISOString().split('T')[0]
-    await supabase.from('checkins').insert({
+    await supabase.schema('dulae_dee').from('checkins').insert({
       family_member_id,
       date: today,
       status: 'emergency',

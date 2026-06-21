@@ -25,7 +25,7 @@ export async function GET(
     const endDateStr = endDate.toISOString().split('T')[0]
 
     // Get family members
-    const { data: members, error: membersError } = await supabase
+    const { data: members, error: membersError } = await supabase.schema('dulae_dee')
       .from('family_members')
       .select('*')
       .eq('family_id', familyId)
@@ -40,7 +40,7 @@ export async function GET(
     }
 
     // Get check-ins for the past week
-    const { data: checkins } = await supabase
+    const { data: checkins } = await supabase.schema('dulae_dee')
       .from('checkins')
       .select('*')
       .in('family_member_id', memberIds)
@@ -49,7 +49,7 @@ export async function GET(
       .order('date', { ascending: true })
 
     // Get medication logs for the past week
-    const { data: medicationLogs } = await supabase
+    const { data: medicationLogs } = await supabase.schema('dulae_dee')
       .from('medication_logs')
       .select('*, medications!inner(name, family_member_id)')
       .in('family_member_id', memberIds)
@@ -63,7 +63,7 @@ export async function GET(
     const skippedDoses = medicationLogs?.filter(log => log.status === 'skipped').length || 0
 
     // Get emergencies for the past week
-    const { data: emergencies } = await supabase
+    const { data: emergencies } = await supabase.schema('dulae_dee')
       .from('emergencies')
       .select('*')
       .in('family_member_id', memberIds)

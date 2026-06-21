@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const familyMemberId = searchParams.get('family_member_id')
     const date = searchParams.get('date')
 
-    let query = supabase
+    let query = supabase.schema('dulae_dee')
       .from('checkins')
       .select('*, family_members!inner(family_id, name)')
       .order('created_at', { ascending: false })
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     const today = new Date().toISOString().split('T')[0]
 
     // Check if a check-in already exists for today
-    const { data: existingCheckin } = await supabase
+    const { data: existingCheckin } = await supabase.schema('dulae_dee')
       .from('checkins')
       .select('id')
       .eq('family_member_id', family_member_id)
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: checkin, error } = await supabase
+    const { data: checkin, error } = await supabase.schema('dulae_dee')
       .from('checkins')
       .insert({
         family_member_id,
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
 
     // If emergency status, create an emergency record too
     if (status === 'emergency') {
-      await supabase.from('emergencies').insert({
+      await supabase.schema('dulae_dee').from('emergencies').insert({
         family_member_id,
         status: 'active',
       })

@@ -17,7 +17,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: members, error } = await supabase
+    const { data: members, error } = await supabase.schema('dulae_dee')
       .from('family_members')
       .select('*')
       .eq('family_id', id)
@@ -61,7 +61,7 @@ export async function POST(
       )
     }
 
-    const { data: member, error } = await supabase
+    const { data: member, error } = await supabase.schema('dulae_dee')
       .from('family_members')
       .insert({
         family_id: id,

@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const familyMemberId = searchParams.get('family_member_id')
 
-    let query = supabase
+    let query = supabase.schema('dulae_dee')
       .from('medications')
       .select('*, family_members!inner(family_id)')
       .order('created_at', { ascending: false })
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Times must be an array' }, { status: 400 })
     }
 
-    const { data: medication, error } = await supabase
+    const { data: medication, error } = await supabase.schema('dulae_dee')
       .from('medications')
       .insert({
         family_member_id,

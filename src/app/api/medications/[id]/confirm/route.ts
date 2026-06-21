@@ -18,7 +18,7 @@ export async function POST(
     }
 
     // Verify the medication exists
-    const { data: medication, error: medError } = await supabase
+    const { data: medication, error: medError } = await supabase.schema('dulae_dee')
       .from('medications')
       .select('*')
       .eq('id', id)
@@ -35,7 +35,7 @@ export async function POST(
     let scheduledTime = scheduled_time || new Date().toISOString()
 
     // Try to find existing pending log for this medication at this time
-    const { data: existingLog } = await supabase
+    const { data: existingLog } = await supabase.schema('dulae_dee')
       .from('medication_logs')
       .select('*')
       .eq('medication_id', id)
@@ -45,7 +45,7 @@ export async function POST(
 
     if (existingLog) {
       // Update existing pending log to confirmed
-      const { data: updatedLog, error: updateError } = await supabase
+      const { data: updatedLog, error: updateError } = await supabase.schema('dulae_dee')
         .from('medication_logs')
         .update({
           status: 'confirmed',
@@ -63,7 +63,7 @@ export async function POST(
     }
 
     // Create a new confirmed log entry
-    const { data: newLog, error: insertError } = await supabase
+    const { data: newLog, error: insertError } = await supabase.schema('dulae_dee')
       .from('medication_logs')
       .insert({
         medication_id: id,

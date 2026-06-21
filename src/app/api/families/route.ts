@@ -11,7 +11,7 @@ export async function GET(_request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: families, error } = await supabase
+    const { data: families, error } = await supabase.schema('dulae_dee')
       .from('families')
       .select('*')
       .order('created_at', { ascending: false })
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Family name is required' }, { status: 400 })
     }
 
-    const { data: family, error } = await supabase
+    const { data: family, error } = await supabase.schema('dulae_dee')
       .from('families')
       .insert({
         name: name.trim(),
